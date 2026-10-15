@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSaarthi – Cybersecurity Without Digital Exclusion</title>
+    <meta name="description" content="Inclusive cyber-safety companion platform for ordinary citizens, parents, elderly users, and students. Check suspicious calls, SMS, links, and deepfakes before clicking.">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1e3a8a">
+    <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/elder-mode.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="navbar-container">
+            <a href="#" class="brand" onclick="switchTab('home-tab'); return false;">
+                <img src="assets/logo.svg" alt="CyberSaarthi Logo" class="brand-logo">
+                <div class="brand-text">
+                    <h1>CyberSaarthi</h1>
+                    <span data-i18n="subtitle">Cybersecurity Without Digital Exclusion</span>
+                </div>
+            </a>
+
+            <nav>
+                <ul class="nav-links">
+                    <li><a onclick="switchTab('home-tab')" class="active" id="nav-home">Home</a></li>
+                    <li><a onclick="switchTab('checker-tab')" id="nav-checker">Check Risk</a></li>
+                    <li><a onclick="switchTab('chatbot-tab')" id="nav-chatbot">AI Assistant</a></li>
+                    <li><a onclick="switchTab('learn-tab')" id="nav-learn">Learn</a></li>
+                    <li><a onclick="switchTab('family-tab')" id="nav-family">Family Safety</a></li>
+                    <li><a onclick="switchTab('dashboard-tab')" id="nav-dashboard">Dashboard</a></li>
+                    <li><a onclick="switchTab('report-tab')" id="nav-report" data-i18n="reportScam">Report Fraud</a></li>
+                    <li><a onclick="switchTab('admin-tab')" id="nav-admin">Operator Portal</a></li>
+                </ul>
+            </nav>
+
+            <div class="toggles-group">
+                <button class="toggle-btn" id="elder-mode-toggle" onclick="toggleElderMode()">
+                    👴 <span data-i18n="elderModeLabel">Elder Mode</span>
+                </button>
+                <select class="lang-select" onchange="setLanguage(this.value)">
+                    <option value="en">English</option>
+                    <option value="ml">മലയാളം (Malayalam)</option>
+                    <option value="hi">हिन्दी (Hindi)</option>
+                </select>
+                <button class="btn-primary" id="pwa-install-btn" style="display:none; padding:6px 14px; font-size:0.85rem;" onclick="installPWA()">
+                    📲 Install App
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-container">
+
+        <!-- 1. HOME SECTION -->
+        <section id="home-tab" class="page-section active">
+            <div class="hero">
+                <div class="hero-content">
+                    <div class="hero-badge">🛡 Official Citizen Digital Safety Companion</div>
+                    <h2>CyberSaarthi</h2>
+                    <p data-i18n="heroMessage">Your digital safety companion for suspicious calls, messages, links and online fraud.</p>
+                    <div class="hero-banner" data-i18n="checkBeforeClick">
+                        "Not sure? Check before you click."
+                    </div>
+                    <div>
+                        <button class="btn-danger" onclick="triggerEmergencyMode()" style="font-size:1.1rem; padding:16px 32px;" data-i18n="emergencyHelp">
+                            🚨 I THINK I AM BEING SCAMMED
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Home Screen Quick Actions -->
+            <div class="quick-actions-grid">
+                <div class="action-card" onclick="switchTab('checker-tab'); switchCheckerTab('link');">
+                    <div class="icon">🔗</div>
+                    <h3 data-i18n="checkLink">Check a Link</h3>
+                    <p style="font-size:0.85rem; color:var(--text-muted);">Verify suspicious URLs and websites</p>
+                </div>
+                <div class="action-card" onclick="switchTab('checker-tab'); switchCheckerTab('message');">
+                    <div class="icon">💬</div>
+                    <h3 data-i18n="checkMessage">Check a Message</h3>
+                    <p style="font-size:0.85rem; color:var(--text-muted);">Detect bank, OTP, and lottery SMS scams</p>
+                </div>
+                <div class="action-card" onclick="switchTab('checker-tab'); switchCheckerTab('phone');">
+                    <div class="icon">📞</div>
+                    <h3 data-i18n="checkPhone">Check a Phone Number</h3>
+                    <p style="font-size:0.85rem; color:var(--text-muted);">Analyze unknown caller threat patterns</p>
+                </div>
+                <div class="action-card" onclick="switchTab('checker-tab'); switchCheckerTab('media');">
+                    <div class="icon">🖼</div>
+                    <h3 data-i18n="checkMedia">Check Media</h3>
+                    <p style="font-size:0.85rem; color:var(--text-muted);">Detect AI-generated deepfake photos & videos</p>
+                </div>
+                <div class="action-card" onclick="switchTab('chatbot-tab');">
+                    <div class="icon">🤖</div>
+                    <h3 data-i18n="talkAssistant">Talk to CyberSaarthi</h3>
+                    <p style="font-size:0.85rem; color:var(--text-muted);">Interactive voice & text cyber assistant</p>
+                </div>
+                <div class="action-card emergency-card" onclick="triggerEmergencyMode();">
+                    <div class="icon">☎</div>
+                    <h3 data-i18n="callHelpline">CALL FOR HELP</h3>
+                    <p style="font-size:0.85rem; opacity:0.9;">Immediate fraud helpline response</p>
+                </div>
+            </div>
+
+            <!-- Service Explanation -->
+            <div class="card" style="margin-bottom:32px;">
+                <h3 style="font-size:1.4rem; color:var(--primary-900); margin-bottom:12px;">What is CyberSaarthi?</h3>
+                <p style="color:var(--text-secondary); margin-bottom:16px;">
+                    CyberSaarthi is designed specifically for ordinary citizens, students, parents, and elderly users who may not have advanced technical knowledge. Most cybersecurity tools are built for IT professionals—CyberSaarthi bridges the gap by offering plain-language risk scores, instant voice guidance, an interactive assistant, and a Java-based Helpline system.
+                </p>
+                <div style="display:flex; gap:20px; flex-wrap:wrap; font-weight:600; font-size:0.9rem;">
+                    <div>✅ Zero technical jargon</div>
+                    <div>✅ 100% Free citizen safety tool</div>
+                    <div>✅ Elder & Regional Language Friendly</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. CYBER RISK CHECKER SECTION -->
+        <section id="checker-tab" class="page-section">
+            <div class="checker-box">
+                <h2 style="font-size:1.8rem; color:var(--primary-900); margin-bottom:8px;">Unified Cyber Risk Checker</h2>
+                <p style="color:var(--text-muted); margin-bottom:24px;">Select the type of content you want to inspect for security threats.</p>
+
+                <div class="checker-tabs">
+                    <button class="tab-btn active" onclick="switchCheckerTab('message')">💬 Message / SMS</button>
+                    <button class="tab-btn" onclick="switchCheckerTab('link')">🔗 Link / URL</button>
+                    <button class="tab-btn" onclick="switchCheckerTab('phone')">📞 Phone Number</button>
+                    <button class="tab-btn" onclick="switchCheckerTab('media')">🖼 Image / Video</button>
+                    <button class="tab-btn" onclick="switchCheckerTab('call')">⚠ Suspicious Call</button>
+                </div>
+
+                <!-- Message Panel -->
+                <div id="panel-message" class="tab-panel active">
+                    <!-- SMS Spam Intelligence Database Status Banner -->
+                    <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:10px 14px; margin-bottom:14px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span style="font-size:1.1rem;">🗄️</span>
+                            <div>
+                                <strong style="color:#1e3a8a; font-size:0.9rem;">SMS Spam Intelligence Database Active</strong>
+                                <span style="font-size:0.8rem; color:#475569; display:block;">5,572 classified records (747 spam, 4,825 safe) loaded for pattern & similarity matching</span>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-primary" style="padding:6px 12px; font-size:0.8rem; background:#2563eb;" onclick="toggleSmsDbModal()">
+                            🔍 Explore Database
+                        </button>
+                    </div>
+
+                    <!-- Quick Sample Selector Pills -->
+                    <div style="margin-bottom:12px;">
+                        <span style="font-size:0.8rem; font-weight:700; color:#475569; text-transform:uppercase; letter-spacing:0.03em; display:block; margin-bottom:6px;">Try Verified Database Samples:</span>
+                        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                            <button type="button" class="sample-pill" style="background:#fee2e2; border:1px solid #fca5a5; color:#991b1b; padding:4px 10px; border-radius:999px; font-size:0.75rem; font-weight:600; cursor:pointer;" onclick="loadSmsSample('spam-lottery')">🎁 FA Cup Lottery</button>
+                            <button type="button" class="sample-pill" style="background:#fee2e2; border:1px solid #fca5a5; color:#991b1b; padding:4px 10px; border-radius:999px; font-size:0.75rem; font-weight:600; cursor:pointer;" onclick="loadSmsSample('spam-kyc')">🏦 £2000 Bonus Caller</button>
+                            <button type="button" class="sample-pill" style="background:#fee2e2; border:1px solid #fca5a5; color:#991b1b; padding:4px 10px; border-radius:999px; font-size:0.75rem; font-weight:600; cursor:pointer;" onclick="loadSmsSample('spam-prize')">🏆 £900 Prize Reward</button>
+                            <button type="button" class="sample-pill" style="background:#fee2e2; border:1px solid #fca5a5; color:#991b1b; padding:4px 10px; border-radius:999px; font-size:0.75rem; font-weight:600; cursor:pointer;" onclick="loadSmsSample('spam-ringtone')">📱 Ringtone Subscription</button>
+                            <button type="button" class="sample-pill" style="background:#dcfce7; border:1px solid #86efac; color:#166534; padding:4px 10px; border-radius:999px; font-size:0.75rem; font-weight:600; cursor:pointer;" onclick="loadSmsSample('ham-normal')">💬 Legitimate SMS (Safe)</button>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="message-input">Paste the suspicious message, SMS, or email text:</label>
+                        <textarea id="message-input" class="form-control" placeholder="e.g., Free entry in 2 a wkly comp to win FA Cup final tkts 21st May 2005. Text FA to 87121..."></textarea>
+                    </div>
+                    <button class="btn-primary" id="analyze-submit-btn" onclick="runAnalysis('message')">🔍 Cross-Reference & Analyze Risk</button>
+                </div>
+
+                <!-- Link Panel -->
+                <div id="panel-link" class="tab-panel">
+                    <div class="input-group">
+                        <label for="link-input">Enter website URL or web link:</label>
+                        <input type="text" id="link-input" class="form-control" placeholder="e.g., http://sbi-kyc-update.xyz/login">
+                    </div>
+                    <button class="btn-primary" onclick="runAnalysis('link')">🔍 Check URL Safety</button>
+                </div>
+
+                <!-- Phone Panel -->
+                <div id="panel-phone" class="tab-panel">
+                    <div class="input-group">
+                        <label for="phone-input" style="font-weight:700;">Enter phone number (+91 XXXXX XXXXX):</label>
+                        <input type="text" id="phone-input" class="form-control" placeholder="e.g., +91 9000000004 or +91 9000000001">
+                    </div>
+
+                    <!-- Step 2: Call Context Analysis Checklist -->
+                    <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:16px; margin-bottom:16px;">
+                        <h4 style="font-size:0.95rem; color:var(--primary-900); margin-bottom:8px;">Call Context Analysis: What did the caller ask you to do?</h4>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:0.85rem;" id="phone-actions-checklist">
+                            <label><input type="checkbox" value="Asked for OTP"> Asked for OTP</label>
+                            <label><input type="checkbox" value="Asked for UPI PIN"> Asked for UPI PIN</label>
+                            <label><input type="checkbox" value="Asked for bank details"> Asked for bank details</label>
+                            <label><input type="checkbox" value="Asked me to transfer money"> Asked me to transfer money</label>
+                            <label><input type="checkbox" value="Asked me to install an app"> Asked me to install an app</label>
+                            <label><input type="checkbox" value="Asked me to share my screen"> Asked me to share my screen</label>
+                            <label><input type="checkbox" value="Claimed to be from a bank"> Claimed to be from a bank</label>
+                            <label><input type="checkbox" value="Claimed to be police/government"> Claimed to be police/government</label>
+                            <label><input type="checkbox" value="Offered a prize"> Offered a prize</label>
+                            <label><input type="checkbox" value="Offered an investment"> Offered an investment</label>
+                            <label><input type="checkbox" value="Threatened account suspension"> Threatened account suspension</label>
+                            <label><input type="checkbox" value="Nothing suspicious"> Nothing suspicious</label>
+                        </div>
+                    </div>
+
+                    <button class="btn-primary" onclick="runAnalysis('phone')">🔍 Verify Phone Number & Behavioral Risk</button>
+                </div>
+
+                <!-- Media Panel -->
+                <div id="panel-media" class="tab-panel">
+                    <div class="input-group">
+                        <label for="media-file-input" style="font-weight:700; margin-bottom:8px; display:block;">UPLOAD IMAGE OR VIDEO:</label>
+                        
+                        <!-- Drag & Drop Zone -->
+                        <div id="media-dropzone" style="border:2px dashed var(--primary-600); padding:28px; text-align:center; border-radius:var(--radius-md); background:#f8fafc; cursor:pointer;" onclick="document.getElementById('media-file-input').click()">
+                            <div style="font-size:2.5rem; margin-bottom:8px;">📁</div>
+                            <p style="font-weight:800; color:var(--primary-900); font-size:1.1rem; margin-bottom:4px;">DROP IMAGE OR VIDEO</p>
+                            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:12px;">OR</p>
+                            <button type="button" class="btn-primary" style="padding:8px 20px; font-size:0.9rem;">CHOOSE FILE</button>
+                            <p style="font-size:0.8rem; color:var(--text-muted); margin-top:8px;">Supported formats: JPG, JPEG, PNG, WEBP, MP4, MOV, WEBM (Max 10MB Images, 100MB Videos)</p>
+                        </div>
+
+                        <!-- Native File Input -->
+                        <input type="file" id="media-file-input" accept="image/*,video/*" class="form-control" style="display:none;" onchange="handleMediaFileSelect(event)">
+                        
+                        <!-- Error / Validation Banner -->
+                        <div id="media-error-banner" style="display:none; color:#dc2626; background:#fee2e2; border:1px solid #fca5a5; padding:10px 14px; border-radius:6px; margin-top:12px; font-weight:600; font-size:0.85rem;"></div>
+
+                        <!-- Media Preview Container -->
+                        <div id="media-preview-container" style="display:none; margin-top:16px; border:2px solid var(--primary-600); padding:16px; border-radius:8px; background:white;">
+                            <div style="display:flex; gap:16px; align-items:center; flex-wrap:wrap;">
+                                <div id="media-preview-element" style="max-width:240px; max-height:180px; overflow:hidden; border-radius:6px; background:#000; border:1px solid #cbd5e1;"></div>
+                                <div>
+                                    <h4 id="media-filename" style="font-size:1.05rem; color:var(--primary-900); margin-bottom:4px;">filename.jpg</h4>
+                                    <p id="media-filesize" style="font-size:0.85rem; color:var(--text-muted); margin-bottom:12px;">Size: 1.2 MB • Format: image/jpeg</p>
+                                    <button class="btn-primary" style="padding:6px 12px; font-size:0.85rem; background:#64748b;" onclick="clearMediaUpload()">🔄 Remove / Choose Another</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:8px;">🔒 Privacy Notice: Your file is selected only for analysis. Do not upload private documents or sensitive personal information unless necessary.</p>
+                    </div>
+
+                    <!-- Animated Loading Terminal Container -->
+                    <div id="media-animated-terminal" style="display:none; background:#0f172a; color:#38bdf8; font-family:monospace; padding:16px; border-radius:8px; margin-bottom:16px; font-size:0.85rem; line-height:1.6;"></div>
+
+                    <button class="btn-primary" id="analyze-media-btn" onclick="runAnalysis('media')" style="width:100%; font-size:1.05rem; padding:14px;">ANALYZE MEDIA</button>
+                </div>
+
+                <!-- Call Simulator Panel -->
+                <div id="panel-call" class="tab-panel">
+                    <div style="background:var(--primary-900); color:white; padding:24px; border-radius:var(--radius-md); text-align:center; margin-bottom:20px;">
+                        <div style="font-size:0.9rem; letter-spacing:1px; text-transform:uppercase; color:#f59e0b;">INCOMING CALL WARNING SIMULATOR</div>
+                        <div style="font-size:2.2rem; font-weight:800; margin:12px 0;">+91 98765 43210</div>
+                        <div class="risk-badge high" style="margin-bottom:16px;">⚠ Potentially Suspicious Call</div>
+                        <p style="font-size:0.9rem; opacity:0.9;">Reasons: Reported scam pattern • Digital arrest keyword match • Unknown caller</p>
+                        <div style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+                            <button class="btn-primary" style="background:#16a34a;" onclick="alert('Proceeding with caution. Never share OTP or PIN.')">Answer Carefully</button>
+                            <button class="btn-danger" onclick="alert('Call Rejected.')">Reject Call</button>
+                            <button class="btn-primary" style="background:#d97706;" onclick="switchTab('report-tab')">Report Number</button>
+                            <button class="btn-danger" onclick="triggerEmergencyMode()">Get Help</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Output Display Card -->
+                <div id="assessment-result-card" class="assessment-card"></div>
+            </div>
+        </section>
+
+        <!-- 3. CYBERSAARTHI CHATBOT SECTION -->
+        <section id="chatbot-tab" class="page-section">
+            <div class="chat-container">
+                <div class="chat-header">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <span style="font-size:1.8rem;">🤖</span>
+                        <div>
+                            <h3 style="font-size:1.2rem; line-height:1.1;">CyberSaarthi Assistant</h3>
+                            <span style="font-size:0.75rem; opacity:0.8;">Online • Real-Time Safety Advice</span>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="toggle-btn" id="mic-toggle-btn" onclick="toggleVoiceInput()" style="color:#000;">🎙 Voice Input</button>
+                    </div>
+                </div>
+
+                <div class="chat-messages" id="chat-messages-container">
+                    <div class="message-bubble bot">
+                        Hello! I am CyberSaarthi Assistant. I can help you verify suspicious messages, links, calls, or guide you if you suspect online fraud. Ask me any question below!
+                    </div>
+                </div>
+
+                <div class="chat-actions">
+                    <div class="chat-action-chip" onclick="sendQuickAction('Check Message')">💬 Check Message</div>
+                    <div class="chat-action-chip" onclick="sendQuickAction('Check Link')">🔗 Check Link</div>
+                    <div class="chat-action-chip" onclick="sendQuickAction('I received a suspicious call saying my account is blocked')">📞 Bank Blocked Call</div>
+                    <div class="chat-action-chip" onclick="sendQuickAction('Someone asked me for OTP')">🔑 OTP Request</div>
+                    <div class="chat-action-chip" onclick="sendQuickAction('Emergency Help')">🚨 Emergency Help</div>
+                </div>
+
+                <div class="chat-input-area">
+                    <input type="text" id="chat-input" class="form-control" placeholder="Ask a question (e.g. 'I received a message saying my bank account will be blocked')..." onkeypress="if(event.key==='Enter') sendChatMessage()">
+                    <button class="btn-primary" onclick="sendChatMessage()">Send</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. LEARN SECTION -->
+        <section id="learn-tab" class="page-section">
+            <h2 style="font-size:1.8rem; color:var(--primary-900); margin-bottom:20px;">Cyber Safety Education</h2>
+            <div class="grid-2">
+                <div class="card">
+                    <h3 style="color:var(--primary-700); margin-bottom:8px;">🔑 OTP Scams</h3>
+                    <p style="color:var(--text-secondary); margin-bottom:12px;">Scammers call claiming to be bank employees or delivery agents asking for your OTP to verify details.</p>
+                    <strong>Rule:</strong> NEVER share your OTP with anyone over a call or text message.
+                </div>
+                <div class="card">
+                    <h3 style="color:var(--primary-700); margin-bottom:8px;">📲 UPI Refund Fraud</h3>
+                    <p style="color:var(--text-secondary); margin-bottom:12px;">Scammers claim they accidentally transferred money to your UPI account and ask you to scan a QR code or enter your PIN to refund it.</p>
+                    <strong>Rule:</strong> Entering your UPI PIN ALWAYS deducts money from your account. You NEVER enter a PIN to receive money.
+                </div>
+                <div class="card">
+                    <h3 style="color:var(--primary-700); margin-bottom:8px;">🏛 Fake KYC & Account Block</h3>
+                    <p style="color:var(--text-secondary); margin-bottom:12px;">Urgent SMS stating your bank account, SIM card, or PAN will be deactivated unless you click a link immediately.</p>
+                    <strong>Rule:</strong> Banks never update KYC via random SMS links. Visit your official bank branch.
+                </div>
+                <div class="card">
+                    <h3 style="color:var(--primary-700); margin-bottom:8px;">🎭 AI Deepfakes & Impersonation</h3>
+                    <p style="color:var(--text-secondary); margin-bottom:12px;">AI clone videos or voice calls pretending to be your relative in trouble demanding emergency money transfers.</p>
+                    <strong>Rule:</strong> Always call back your relative on their saved phone number directly to verify.
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. FAMILY SAFETY SECTION -->
+        <section id="family-tab" class="page-section">
+            <h2 style="font-size:1.8rem; color:var(--primary-900); margin-bottom:12px;">Family Safety Hub</h2>
+            <p style="color:var(--text-muted); margin-bottom:24px;">Customized protection guidelines tailored for every family member.</p>
+            <div class="grid-2">
+                <div class="card" style="text-align:center;">
+                    <div style="font-size:3rem; margin-bottom:8px;">👴</div>
+                    <h3>Grandparents & Elders</h3>
+                    <p style="color:var(--text-muted); margin-bottom:16px;">Protection against pension scams, digital arrest, and high-contrast Elder Mode guidance.</p>
+                    <button class="btn-primary" onclick="showFamilyGuide('grandparent')">View Elder Guide</button>
+                </div>
+                <div class="card" style="text-align:center;">
+                    <div style="font-size:3rem; margin-bottom:8px;">👩‍💼</div>
+                    <h3>Parents & Householders</h3>
+                    <p style="color:var(--text-muted); margin-bottom:16px;">Utility bill scams, fake job offers, and online shopping link checkers.</p>
+                    <button class="btn-primary" onclick="showFamilyGuide('parent')">View Parent Guide</button>
+                </div>
+                <div class="card" style="text-align:center;">
+                    <div style="font-size:3rem; margin-bottom:8px;">👦</div>
+                    <h3>Children & Students</h3>
+                    <p style="color:var(--text-muted); margin-bottom:16px;">Social media safety, online gaming link protection, and cyberbullying help.</p>
+                    <button class="btn-primary" onclick="showFamilyGuide('child')">View Student Guide</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. USER DASHBOARD SECTION -->
+        <section id="dashboard-tab" class="page-section">
+            <h2 style="font-size:1.8rem; color:var(--primary-900); margin-bottom:20px;">My Safety Dashboard</h2>
+            <div class="grid-2">
+                <!-- Cyber Safety Score Card -->
+                <div class="card">
+                    <h3 style="margin-bottom:12px;">🛡 My Cyber Safety Score</h3>
+                    <div style="font-size:3rem; font-weight:800; color:var(--primary-600);" id="safety-score-value">72/100</div>
+                    <div id="safety-score-label" style="font-weight:700; margin-bottom:16px;">MODERATE SAFETY — CAUTION ADVISED</div>
+                    <h4 style="font-size:0.95rem; margin-bottom:8px;">Security Checklist:</h4>
+                    <div style="display:flex; flex-direction:column; gap:8px; font-size:0.9rem; margin-bottom:16px;">
+                        <label><input type="checkbox" id="score-q1" checked onchange="calculateSafetyScore()"> Enabled 2FA on WhatsApp & Gmail</label>
+                        <label><input type="checkbox" id="score-q2" checked onchange="calculateSafetyScore()"> Never share OTP with callers</label>
+                        <label><input type="checkbox" id="score-q3" onchange="calculateSafetyScore()"> Check links before clicking</label>
+                        <label><input type="checkbox" id="score-q4" checked onchange="calculateSafetyScore()"> Unique banking passwords</label>
+                        <label><input type="checkbox" id="score-q5" onchange="calculateSafetyScore()"> Phone OS updated</label>
+                    </div>
+                    <ul id="safety-score-recs" style="font-size:0.85rem; color:var(--text-secondary); padding-left:16px;"></ul>
+                </div>
+
+                <!-- My Reports History -->
+                <div class="card">
+                    <h3 style="margin-bottom:12px;">📋 My Fraud Reports</h3>
+                    <div id="my-reports-list" style="font-size:0.9rem;">
+                        <p style="color:var(--text-muted);">Loading reported complaints...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. REPORT FRAUD SECTION -->
+        <section id="report-tab" class="page-section">
+            <div class="checker-box">
+                <h2 style="font-size:1.8rem; color:var(--primary-900); margin-bottom:8px;">Report Cyber Fraud</h2>
+                <p style="color:var(--text-muted); margin-bottom:24px;">Submit details to generate a unique complaint reference ID for the CyberSaarthi Helpline.</p>
+
+                <form id="report-form" onsubmit="submitFraudReport(event)">
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;" class="input-group">
+                        <div>
+                            <label for="report-name">Your Name (Optional):</label>
+                            <input type="text" id="report-name" class="form-control" placeholder="John Doe">
+                        </div>
+                        <div>
+                            <label for="report-phone">Your Phone Number (Optional):</label>
+                            <input type="text" id="report-phone" class="form-control" placeholder="+91 XXXXX XXXXX">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="report-type">Scam Category:*</label>
+                        <select id="report-type" class="form-control" required>
+                            <option value="Banking Fraud">Banking Fraud</option>
+                            <option value="UPI Fraud">UPI Fraud</option>
+                            <option value="Phishing">Phishing Link</option>
+                            <option value="Scam Call">Scam Call / Fake Customer Support</option>
+                            <option value="Fake Job">Fake Job Offer</option>
+                            <option value="Online Shopping Fraud">Online Shopping Fraud</option>
+                            <option value="Deepfake">Deepfake / AI Fraud</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="report-desc">Description of Incident:*</label>
+                        <textarea id="report-desc" class="form-control" required placeholder="Describe what happened, what message or call you received..."></textarea>
+                    </div>
+
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;" class="input-group">
+                        <div>
+                            <label for="report-suspect-number">Suspicious Phone Number:</label>
+                            <input type="text" id="report-suspect-number" class="form-control" placeholder="+91 98765 43210">
+                        </div>
+                        <div>
+                            <label for="report-suspect-url">Suspicious URL / Link:</label>
+                            <input type="text" id="report-suspect-url" class="form-control" placeholder="http://fake-link.xyz">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="report-amount">Amount Lost in ₹ (Optional):</label>
+                        <input type="number" id="report-amount" class="form-control" placeholder="0">
+                    </div>
+
+                    <button type="submit" class="btn-danger" style="width:100%;">Submit Fraud Report & Generate Reference Code</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- 8. ADMIN / HELPLINE OPERATOR PORTAL -->
+        <section id="admin-tab" class="page-section">
+            <h2 style="font-size:1.8rem; color:var(--primary-900); margin-bottom:8px;">Helpline Operator Dashboard</h2>
+            <p style="color:var(--text-muted); margin-bottom:24px;">Java Backend Live Helpline & Fraud Complaint Operator Console</p>
+
+            <!-- PHONE FRAUD INTELLIGENCE SECTION -->
+            <div class="card" style="margin-bottom:24px; border-left:6px solid var(--primary-600);">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                    <h3 style="font-size:1.2rem; color:var(--primary-900);">📞 PHONE FRAUD INTELLIGENCE (CyberSaarthi Database)</h3>
+                    <button class="btn-primary" style="padding:4px 10px; font-size:0.8rem; background:#475569;" onclick="seedDemoDataBackend()">🔄 Reset / Seed Demo Data</button>
+                </div>
+                <div style="display:grid; grid-template-columns: repeat(5, 1fr); gap:12px; text-align:center; font-size:0.9rem;">
+                    <div style="background:#f8fafc; padding:12px; border-radius:6px; border:1px solid #cbd5e1;">
+                        <div style="color:var(--text-muted); font-size:0.75rem; font-weight:700;">REPORTED NUMBERS</div>
+                        <div style="font-size:1.5rem; font-weight:800; color:var(--primary-900);" id="pi-total-numbers">48</div>
+                    </div>
+                    <div style="background:#fee2e2; padding:12px; border-radius:6px; border:1px solid #fca5a5;">
+                        <div style="color:#dc2626; font-size:0.75rem; font-weight:700;">HIGH RISK</div>
+                        <div style="font-size:1.5rem; font-weight:800; color:#dc2626;" id="pi-high-risk">17</div>
+                    </div>
+                    <div style="background:#fef3c7; padding:12px; border-radius:6px; border:1px solid #fde68a;">
+                        <div style="color:#b45309; font-size:0.75rem; font-weight:700;">SUSPICIOUS</div>
+                        <div style="font-size:1.5rem; font-weight:800; color:#b45309;" id="pi-suspicious">21</div>
+                    </div>
+                    <div style="background:#f0fdf4; padding:12px; border-radius:6px; border:1px solid #bbf7d0;">
+                        <div style="color:#16a34a; font-size:0.75rem; font-weight:700;">UNREPORTED</div>
+                        <div style="font-size:1.5rem; font-weight:800; color:#16a34a;" id="pi-unreported">10</div>
+                    </div>
+                    <div style="background:#f1f5f9; padding:12px; border-radius:6px; border:1px solid #cbd5e1;">
+                        <div style="color:var(--text-muted); font-size:0.75rem; font-weight:700;">TOP SCAM TYPE</div>
+                        <div style="font-size:1rem; font-weight:800; color:var(--primary-900); margin-top:4px;" id="pi-top-scam">UPI Fraud</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quick-actions-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom:24px;">
+                <div class="card" style="text-align:center;">
+                    <div style="font-size:0.85rem; color:var(--text-muted);">TOTAL REPORTS</div>
+                    <div style="font-size:2rem; font-weight:800; color:var(--primary-600);" id="kpi-total-reports">0</div>
+                </div>
+                <div class="card" style="text-align:center;">
+                    <div style="font-size:0.85rem; color:var(--text-muted);">HIGH RISK CASES</div>
+                    <div style="font-size:2rem; font-weight:800; color:var(--risk-high);" id="kpi-high-risk">0</div>
+                </div>
+                <div class="card" style="text-align:center;">
+                    <div style="font-size:0.85rem; color:var(--text-muted);">ACTIVE CALLS</div>
+                    <div style="font-size:2rem; font-weight:800; color:var(--risk-suspicious);" id="kpi-active-calls">0</div>
+                </div>
+                <div class="card" style="text-align:center;">
+                    <div style="font-size:0.85rem; color:var(--text-muted);">RESOLVED CASES</div>
+                    <div style="font-size:2rem; font-weight:800; color:var(--risk-low);" id="kpi-resolved">0</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap;">
+                    <h3 style="font-size:1.2rem; color:var(--primary-900);">Live Helpline Call & Fraud Incident Queue</h3>
+                    <div>
+                        <select onchange="refreshAdminDashboard()" class="lang-select">
+                            <option value="today">Filter: Today</option>
+                            <option value="week">Filter: This Week</option>
+                            <option value="month">Filter: This Month</option>
+                        </select>
+                        <button class="btn-primary" style="padding:6px 12px; font-size:0.85rem;" onclick="refreshAdminDashboard()">🔄 Refresh Queue</button>
+                    </div>
+                </div>
+
+                <div style="overflow-x:auto;">
+                    <table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.9rem;">
+                        <thead>
+                            <tr style="background:#f1f5f9; border-bottom:2px solid #cbd5e1;">
+                                <th style="padding:12px;">Reference ID</th>
+                                <th style="padding:12px;">Caller / Reporter</th>
+                                <th style="padding:12px;">Scam Type</th>
+                                <th style="padding:12px;">Risk Level</th>
+                                <th style="padding:12px;">Status</th>
+                                <th style="padding:12px;">Time</th>
+                            </tr>
+                        </thead>
+                        <tbody id="helpline-table-body">
+                            <!-- Populated dynamically by helpline-operator.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Emergency Modal -->
+    <div id="emergency-modal" class="modal-overlay">
+        <div class="modal-content" style="border-top:6px solid #dc2626;">
+            <button class="close-modal" onclick="closeEmergencyModal()">×</button>
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+                <span style="font-size:2.5rem; color:#dc2626;">🚨</span>
+                <div>
+                    <h2 style="color:#dc2626; font-size:1.6rem;">EMERGENCY FRAUD RESPONSE</h2>
+                    <span style="font-weight:700; color:var(--text-muted);">Follow these 5 immediate safety steps:</span>
+                </div>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:24px;">
+                <div style="background:#fee2e2; padding:12px 16px; border-radius:8px; border-left:4px solid #dc2626;">
+                    <strong>STEP 1: Stop Communication</strong>
+                    <p style="font-size:0.9rem;">Immediately stop communicating with the scammer. Do not answer further calls or texts.</p>
+                </div>
+                <div style="background:#fee2e2; padding:12px 16px; border-radius:8px; border-left:4px solid #dc2626;">
+                    <strong>STEP 2: Protect Credentials</strong>
+                    <p style="font-size:0.9rem;">Do not share OTP, PIN, password or banking details under any circumstances.</p>
+                </div>
+                <div style="background:#fee2e2; padding:12px 16px; border-radius:8px; border-left:4px solid #dc2626;">
+                    <strong>STEP 3: Contact Your Bank (1930)</strong>
+                    <p style="font-size:0.9rem;">If money was deducted, call 1930 immediately or your bank helpline to freeze transactions.</p>
+                </div>
+                <div style="background:#fee2e2; padding:12px 16px; border-radius:8px; border-left:4px solid #dc2626;">
+                    <strong>STEP 4: Preserve Evidence</strong>
+                    <p style="font-size:0.9rem;">Save screenshots of messages, phone call numbers, and transaction IDs.</p>
+                </div>
+                <div style="background:#fee2e2; padding:12px 16px; border-radius:8px; border-left:4px solid #dc2626;">
+                    <strong>STEP 5: Contact CyberSaarthi Helpline</strong>
+                    <p style="font-size:0.9rem;">Connect directly to our Java-backed helpline dispatch service.</p>
+                </div>
+            </div>
+
+            <div style="text-align:center;">
+                <button class="btn-danger" style="width:100%; font-size:1.2rem; padding:16px;" onclick="openHelplineCallSimulator()">
+                    ☎ CALL CYBERSAARTHI HELPLINE (1800-CYBER-HELP)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Family Safety Modal -->
+    <div id="family-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeFamilyModal()">×</button>
+            <h2 id="family-modal-title" style="margin-bottom:16px;"></h2>
+            <div id="family-modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Judge Demo Mode Modal -->
+    <div id="demo-mode-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width:700px; border-top:6px solid #2563eb;">
+            <button class="close-modal" onclick="closeDemoModal()">×</button>
+            <h2 style="color:var(--primary-900); margin-bottom:8px;">⚖ Judge Presentation Demo Mode</h2>
+            <p style="color:var(--text-muted); margin-bottom:20px;">Click any scenario below to execute instant end-to-end presentation workflows for PBL evaluation.</p>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:24px;">
+                <button class="btn-primary" style="background:#1e3a8a; text-align:left; padding:12px 16px;" onclick="loadDemoScenario(1)">
+                    1. 🟢 Test 1: +91 9000000001 (0 Reports ➔ UNKNOWN)
+                </button>
+                <button class="btn-primary" style="background:#1e3a8a; text-align:left; padding:12px 16px;" onclick="loadDemoScenario(2)">
+                    2. 🟠 Test 2: +91 9000000002 (3 Reports ➔ SUSPICIOUS)
+                </button>
+                <button class="btn-primary" style="background:#1e3a8a; text-align:left; padding:12px 16px;" onclick="loadDemoScenario(3)">
+                    3. 🔴 Test 3: +91 9000000004 (12 Reports ➔ HIGH RISK)
+                </button>
+                <button class="btn-primary" style="background:#1e3a8a; text-align:left; padding:12px 16px;" onclick="loadDemoScenario(4)">
+                    4. 🟢 Test 4: Unknown Number + Normal Call
+                </button>
+                <button class="btn-primary" style="background:#1e3a8a; text-align:left; padding:12px 16px;" onclick="loadDemoScenario(5)">
+                    5. 🔴 Test 5: Unknown Number + OTP & UPI PIN
+                </button>
+                <button class="btn-primary" style="background:#1e3a8a; text-align:left; padding:12px 16px;" onclick="loadDemoScenario(6)">
+                    6. 🖼 Media Upload & AI Deepfake Inspection
+                </button>
+            </div>
+
+            <div style="border-top:1px solid #cbd5e1; padding-top:16px; text-align:center;">
+                <button class="btn-danger" style="width:100%; font-size:1.1rem;" onclick="runMainPresentationFlow()">
+                    🎬 RUN MAIN DEMONSTRATION FLOW (Steps 1 to 13)
+                </button>
+            </div>
+    <!-- SMS Spam Intelligence Database Explorer Modal -->
+    <div id="sms-db-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15, 23, 42, 0.75); backdrop-filter:blur(4px); z-index:10000; align-items:center; justify-content:center; padding:16px;">
+        <div style="background:#ffffff; border-radius:14px; max-width:800px; width:100%; max-height:90vh; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 20px 40px rgba(0,0,0,0.25);">
+            <!-- Modal Header -->
+            <div style="background:var(--primary-900); color:#ffffff; padding:18px 24px; display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <h3 style="margin:0; font-size:1.25rem; display:flex; align-items:center; gap:8px;">
+                        🗄️ SMS Spam Intelligence Database
+                    </h3>
+                    <p style="margin:4px 0 0 0; font-size:0.8rem; color:#94a3b8;">5,572 Verified SMS Classification Corpus (747 Spam • 4,825 Ham)</p>
+                </div>
+                <button type="button" onclick="toggleSmsDbModal()" style="background:transparent; border:none; color:#ffffff; font-size:1.5rem; cursor:pointer; line-height:1;">&times;</button>
+            </div>
+
+            <!-- Stats Bar -->
+            <div style="background:#f1f5f9; border-bottom:1px solid #e2e8f0; padding:12px 24px; display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; text-align:center;">
+                <div>
+                    <div style="font-size:1.1rem; font-weight:800; color:#1e293b;">5,572</div>
+                    <div style="font-size:0.75rem; color:#64748b; text-transform:uppercase;">Total Records</div>
+                </div>
+                <div>
+                    <div style="font-size:1.1rem; font-weight:800; color:#dc2626;">747</div>
+                    <div style="font-size:0.75rem; color:#64748b; text-transform:uppercase;">Verified Spam</div>
+                </div>
+                <div>
+                    <div style="font-size:1.1rem; font-weight:800; color:#16a34a;">4,825</div>
+                    <div style="font-size:0.75rem; color:#64748b; text-transform:uppercase;">Legitimate Ham</div>
+                </div>
+                <div>
+                    <div style="font-size:1.1rem; font-weight:800; color:#2563eb;">100+</div>
+                    <div style="font-size:0.75rem; color:#64748b; text-transform:uppercase;">Spam Patterns</div>
+                </div>
+            </div>
+
+            <!-- Filter & Search Controls -->
+            <div style="padding:14px 24px; border-bottom:1px solid #e2e8f0; background:#ffffff;">
+                <!-- Type Filter Tabs -->
+                <div style="display:flex; gap:8px; margin-bottom:10px; align-items:center; justify-content:space-between; flex-wrap:wrap;">
+                    <div style="display:flex; gap:8px;">
+                        <button type="button" id="sms-filter-all" class="btn-primary" style="padding:5px 12px; font-size:0.8rem; background:#1e3a8a;" onclick="setSmsDbFilter('all')">All Records (5,572)</button>
+                        <button type="button" id="sms-filter-spam" class="btn-primary" style="padding:5px 12px; font-size:0.8rem; background:#e2e8f0; color:#1e293b;" onclick="setSmsDbFilter('spam')">🚨 Spam (747)</button>
+                        <button type="button" id="sms-filter-ham" class="btn-primary" style="padding:5px 12px; font-size:0.8rem; background:#e2e8f0; color:#1e293b;" onclick="setSmsDbFilter('ham')">🟢 Legitimate Ham (4,825)</button>
+                    </div>
+                    <span id="sms-db-count-label" style="font-size:0.8rem; color:#64748b; font-weight:600;">Showing records</span>
+                </div>
+
+                <!-- Search Input -->
+                <div style="display:flex; gap:10px; margin-bottom:10px;">
+                    <input type="text" id="sms-db-search-input" class="form-control" style="flex:1;" placeholder="Search message text, record ID (e.g. #3), phone number, or keywords..." oninput="searchSmsDbFromUi()">
+                    <button type="button" class="btn-primary" style="padding:0 18px;" onclick="searchSmsDbFromUi()">Search</button>
+                    <button type="button" class="btn-primary" style="padding:0 14px; background:#64748b;" onclick="resetSmsDbSearch()">Clear</button>
+                </div>
+
+                <!-- Quick Keywords Bar -->
+                <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                    <span style="font-size:0.75rem; font-weight:700; color:#64748b; text-transform:uppercase;">Quick Filter:</span>
+                    <button type="button" class="sample-pill" style="background:#fee2e2; border:1px solid #fca5a5; color:#991b1b; padding:2px 8px; border-radius:999px; font-size:0.75rem; cursor:pointer;" onclick="quickFilterSmsDb('claim')">claim</button>
+                    <button type="button" class="sample-pill" style="background:#fee2e2; border:1px solid #fca5a5; color:#991b1b; padding:2px 8px; border-radius:999px; font-size:0.75rem; cursor:pointer;" onclick="quickFilterSmsDb('prize')">prize</button>
+                    <button type="button" class="sample-pill" style="background:#fee2e2; border:1px solid #fca5a5; color:#991b1b; padding:2px 8px; border-radius:999px; font-size:0.75rem; cursor:pointer;" onclick="quickFilterSmsDb('won')">won</button>
+                    <button type="button" class="sample-pill" style="background:#fee2e2; border:1px solid #fca5a5; color:#991b1b; padding:2px 8px; border-radius:999px; font-size:0.75rem; cursor:pointer;" onclick="quickFilterSmsDb('urgent')">urgent</button>
+                    <button type="button" class="sample-pill" style="background:#fee2e2; border:1px solid #fca5a5; color:#991b1b; padding:2px 8px; border-radius:999px; font-size:0.75rem; cursor:pointer;" onclick="quickFilterSmsDb('1000')">£1000</button>
+                    <button type="button" class="sample-pill" style="background:#fee2e2; border:1px solid #fca5a5; color:#991b1b; padding:2px 8px; border-radius:999px; font-size:0.75rem; cursor:pointer;" onclick="quickFilterSmsDb('guaranteed')">guaranteed</button>
+                    <button type="button" class="sample-pill" style="background:#fee2e2; border:1px solid #fca5a5; color:#991b1b; padding:2px 8px; border-radius:999px; font-size:0.75rem; cursor:pointer;" onclick="quickFilterSmsDb('call')">call now</button>
+                    <button type="button" class="sample-pill" style="background:#dcfce7; border:1px solid #86efac; color:#166534; padding:2px 8px; border-radius:999px; font-size:0.75rem; cursor:pointer;" onclick="quickFilterSmsDb('thanks')">thanks (ham)</button>
+                    <button type="button" class="sample-pill" style="background:#dcfce7; border:1px solid #86efac; color:#166534; padding:2px 8px; border-radius:999px; font-size:0.75rem; cursor:pointer;" onclick="quickFilterSmsDb('meeting')">meeting (ham)</button>
+                </div>
+            </div>
+
+            <!-- Records Scroll Area -->
+            <div id="sms-db-results" style="padding:16px 24px; overflow-y:auto; flex:1; background:#f8fafc;">
+                <!-- Populated dynamically by checker.js -->
+            </div>
+
+            <!-- Modal Footer -->
+            <div style="padding:12px 24px; background:#ffffff; border-top:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:0.8rem; color:#64748b;">Click "Test This Message" to paste into the checker and run risk analysis.</span>
+                <button type="button" class="btn-primary" style="background:#64748b;" onclick="toggleSmsDbModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Judge Demo Trigger Bar -->
+    <div class="demo-floating-bar">
+        <span style="font-weight:700;">⚖ PBL Judge Demo Mode</span>
+        <button class="btn-primary" style="padding:6px 14px; font-size:0.85rem;" onclick="toggleJudgeDemoModal()">Launch Scenarios</button>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div style="max-width:1280px; margin:0 auto;">
+            <h3 style="font-size:1.4rem; margin-bottom:8px;">CyberSaarthi</h3>
+            <p style="margin-bottom:12px;">Cybersecurity Without Digital Exclusion • Inclusive Citizen Safety Platform</p>
+            <p style="font-size:0.8rem; color:#94a3b8;">
+                Disclaimer: Prototype Heuristic & Safety Guidance Platform. Not an official government service. National Cyber Crime Helpline: 1930.
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Modules -->
+    <script src="js/i18n.js"></script>
+    <script src="js/checker.js"></script>
+    <script src="js/chatbot.js"></script>
+    <script src="js/emergency.js"></script>
+    <script src="js/helpline-operator.js"></script>
+    <script src="js/reports.js"></script>
+    <script src="js/safety-score.js"></script>
+    <script src="js/family-safety.js"></script>
+    <script src="js/demo-mode.js"></script>
+    <script src="js/pwa.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

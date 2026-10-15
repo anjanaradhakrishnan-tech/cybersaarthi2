@@ -1,0 +1,79 @@
+/* CyberSaarthi Elder Mode - High Contrast & High Accessibility Stylesheet */
+
+body.elder-mode {
+    font-size: 1.35rem !important;
+    line-height: 1.8 !important;
+    background-color: #ffffff !important;
+    color: #000000 !important;
+}
+
+body.elder-mode h1, 
+body.elder-mode h2, 
+body.elder-mode h3, 
+body.elder-mode h4 {
+    font-size: 2.2rem !important;
+    color: #000000 !important;
+    font-weight: 800 !important;
+}
+
+body.elder-mode p {
+    font-size: 1.35rem !important;
+    color: #111111 !important;
+}
+
+body.elder-mode .action-card {
+    padding: 36px 24px !important;
+    border: 3px solid #000000 !important;
+    border-radius: 16px !important;
+    background: #f8fafc !important;
+}
+
+body.elder-mode .action-card .icon {
+    font-size: 3.5rem !important;
+}
+
+body.elder-mode .action-card h3 {
+    font-size: 1.6rem !important;
+    font-weight: 800 !important;
+}
+
+body.elder-mode .form-control {
+    font-size: 1.4rem !important;
+    padding: 20px !important;
+    border: 3px solid #000000 !important;
+    border-radius: 12px !important;
+}
+
+body.elder-mode .btn-primary, 
+body.elder-mode .btn-danger,
+body.elder-mode .tab-btn {
+    font-size: 1.35rem !important;
+    padding: 20px 36px !important;
+    border-radius: 14px !important;
+    font-weight: 800 !important;
+    border: 3px solid #000000 !important;
+}
+
+body.elder-mode .assessment-card {
+    border: 4px solid #000000 !important;
+    padding: 36px !important;
+}
+
+body.elder-mode .risk-badge {
+    font-size: 1.6rem !important;
+    padding: 12px 28px !important;
+    border: 3px solid #000000 !important;
+}
+
+body.elder-mode .recommendation-box {
+    font-size: 1.4rem !important;
+    border-left: 8px solid #000000 !important;
+    padding: 24px !important;
+    background: #fffbebf5 !important;
+}
+
+body.elder-mode .emergency-floating-btn {
+    font-size: 1.5rem !important;
+    padding: 20px 36px !important;
+    border: 4px solid #ffffff !important;
+}

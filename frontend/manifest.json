@@ -1,0 +1,17 @@
+{
+  "short_name": "CyberSaarthi",
+  "name": "CyberSaarthi - Cybersecurity Without Digital Exclusion",
+  "description": "Inclusive cyber-safety companion for suspicious calls, messages, links and online fraud.",
+  "icons": [
+    {
+      "src": "assets/logo.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192 512x512"
+    }
+  ],
+  "start_url": "./index.html",
+  "background_color": "#0f172a",
+  "theme_color": "#1e3a8a",
+  "display": "standalone",
+  "orientation": "portrait"
+}
